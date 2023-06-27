@@ -52,7 +52,14 @@ export const UserProvider = ({ children }) => {
       console.log(error);
     }
   };
+  
 
+  const userLogout = () => {
+    setData(null);
+    localStorage.removeItem("@TOKEN");
+    navigate("/");
+    window.location.reload();   
+  };
 
 
 
@@ -65,6 +72,7 @@ export const UserProvider = ({ children }) => {
         token: data.token,
         registerUser,
         loginUser,
+        userLogout
       }}
     >
       {children}

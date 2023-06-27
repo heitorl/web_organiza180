@@ -36,7 +36,6 @@ export const TaskProvider = ({ children }) => {
   const getAllTasksForUser = async (userId) => {
     try {
       const token = localStorage.getItem("@TOKEN");
-      console.log(token)
       const response = await api.get(`/task/allTask/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`, 

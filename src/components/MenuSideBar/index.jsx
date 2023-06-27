@@ -3,11 +3,17 @@ import { IoIosContacts } from "react-icons/io";
 import { FiSettings } from "react-icons/fi";
 import { MdDashboard, MdAddTask, MdOutlineTask } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../../providers/UserContext";
 
 
 const MenuSideBar = () => {
 
+  const { userLogout } = useContext(UserContext)
 
+  const handleLogout = () => {
+    userLogout();
+  };
   return (
 
     <ContentGeral>
@@ -37,6 +43,7 @@ const MenuSideBar = () => {
     <div className="ctn-links">
       <div className="ctn-icon">
         <IoIosContacts />
+        <span onClick={handleLogout}>Logout</span>
       </div>           
     </div>
     
