@@ -1,7 +1,7 @@
 import axios from "axios";
+import env from "dotenv"
 
 export const api = axios.create({
-  baseURL: 'https://api-organize180.onrender.com',
+  baseURL: env.API_URL,
   timeout: 12000
 })
-// baseURL: 'https://api-organize180.onrender.com',
