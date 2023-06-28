@@ -43,7 +43,7 @@ const MenuSideBar = () => {
     <div className="ctn-links">
       <div className="ctn-icon">
         <IoIosContacts />
-        <span onClick={handleLogout}>Logout</span>
+        <Link onClick={handleLogout}>Logout</Link>
       </div>           
     </div>
     

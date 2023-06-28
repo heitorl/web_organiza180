@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { api } from "../api";
-// import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 export const UserContext = createContext({});
 
@@ -19,7 +19,6 @@ export const UserProvider = ({ children }) => {
     const user = localStorage.getItem("@WebProf:user");
 
     if (token && user) {
-      console.log(user, '=====')
       return { token, user: JSON.parse(user) };
     }
 
@@ -29,17 +28,21 @@ export const UserProvider = ({ children }) => {
   const loginUser = async (formData) => {
     try {
       const response = await api.post("/user/signin", formData);
-      console.log(response)
+      if (response.data.status != 200) {
+
+        throw new Error("Resposta inválida");
+      }
       const { token, user } = response.data.message;
-
+  
       setData({ token, user });
-
+  
       localStorage.setItem("@TOKEN", token);
       localStorage.setItem("@WebProf:user", JSON.stringify(user));
-
-      navigate("/dashboard");
+  
+      return true; 
     } catch (error) {
-      console.log(error);
+      toast.error("Email ou senha inválidos!")
+      console.log(error);     
     }
   };
 

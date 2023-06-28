@@ -2,7 +2,7 @@
 import {AnimationContainer, Background, Container, Content } from "./style"
 import { FiLock, FiMail } from "react-icons/fi"
 import * as yup from "yup"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Form from "../../components/Form"
 import { useContext } from "react"
 import { UserContext } from "../../providers/UserContext"
@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 
 
 const Signin = () => {
-
+  const navigate = useNavigate()
   const inputs = [
     {
       name: "email",
@@ -34,12 +34,17 @@ const Signin = () => {
 
   const { loginUser } = useContext(UserContext)
 
-
- const onSubmitFuction = async (data) => {
-    await loginUser(data)
-    toast.success("Login bem sucedido!")
-    console.log(data)
-  }
+  const onSubmitFunction = async (data) => {
+    try {
+      const response = await loginUser(data);
+      if (response) {
+        toast.success("Login bem sucedido!");
+        navigate("/dashboard");
+      }
+    } catch (error) {      
+      console.log(error);
+    }
+  };
 
   return <Container> 
 
@@ -49,7 +54,7 @@ const Signin = () => {
         <h1>Entre com sua conta</h1>
       </div>
       <Form  
-          onSubmit={onSubmitFuction} 
+          onSubmit={onSubmitFunction} 
           link="/signin"
           inputs={inputs} 
       />

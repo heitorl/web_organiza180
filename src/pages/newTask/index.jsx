@@ -1,10 +1,10 @@
-import { FiUser } from "react-icons/fi";
 import { Container, Content } from "./style";
 import Form from "../../components/Form";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { TaskContext } from "../../providers/TaskContext.jsx";
 import Sidebar from "../../components/sideBar";
+import { MdOutlineDescription } from "react-icons/md";
 
 const NewTask = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const NewTask = () => {
 
   const formInputs = [
     {
-      icon: FiUser,
+      icon: MdOutlineDescription,
       label: "Descrição",
       placeholder: "Digite a descrição da tarefa",
       type: "text",
