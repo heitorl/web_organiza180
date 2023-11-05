@@ -3,48 +3,54 @@ import { Container, TaskLister, Task } from "./style";
 import { FaTimes } from "react-icons/fa";
 import { UserContext } from "../../providers/UserContext";
 import EmptyTask from "../EmptyTask";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import { TaskContext } from "../../providers/TaskContext";
 import { MdOutlineTaskAlt } from "react-icons/md";
 import { toast } from "react-hot-toast";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import VerifyDifficulty from "../VerifyDificulty";
 
-const TaskList = ({isCompleted}) => {
+const TaskList = ({ isCompleted }) => {
   const { user } = useContext(UserContext);
-  const { getAllTasksForUser, deleteTask, updateTaskStatus } = useContext(TaskContext);
+  const { getAllTasksForUser, deleteTask, updateTaskStatus } =
+    useContext(TaskContext);
 
   const [userTasks, setUserTasks] = useState([]);
   const userId = user.id;
-  const status = userTasks.tasks
-  
+  const status = userTasks.tasks;
+
   useEffect(() => {
     const fetchTaskList = async () => {
       try {
         const response = await getAllTasksForUser(userId);
-        if (response.tasks) {
-          let filteredTasks = response.tasks;
+        console.log(response, "res");
+        if (response.length) {
+          let filteredTasks = response;
           if (isCompleted) {
-            filteredTasks = filteredTasks.filter(task => task.status === "completed");
+            filteredTasks = filteredTasks.filter(
+              (task) => task.status === "completed"
+            );
           } else {
-            filteredTasks = filteredTasks.filter(task => task.status !== "completed");
+            filteredTasks = filteredTasks.filter(
+              (task) => task.status !== "completed"
+            );
           }
           setUserTasks(() => ({ tasks: filteredTasks }));
         } else {
-          console.error('Dados de tarefas ausentes');
+          console.error("Dados de tarefas ausentes");
         }
       } catch (error) {
         console.error(error);
       }
     };
-  
+
     fetchTaskList();
   }, [getAllTasksForUser, userId, status, isCompleted]);
 
   const handleTaskDelete = async (taskId) => {
     try {
       await deleteTask(taskId);
-      const updatedTasks = userTasks.tasks.filter(task => task.id !== taskId);
+      const updatedTasks = userTasks.tasks.filter((task) => task.id !== taskId);
       setUserTasks({ tasks: updatedTasks });
     } catch (error) {
       console.error(error);
@@ -61,7 +67,7 @@ const TaskList = ({isCompleted}) => {
         }
         return task;
       });
-      
+
       setUserTasks({ tasks: updatedTasks });
       toast.success('status da tarefa foi alterado para "completada"!');
     } catch (error) {
@@ -73,7 +79,7 @@ const TaskList = ({isCompleted}) => {
     <Container>
       <TaskLister>
         {userTasks.tasks && userTasks.tasks.length ? (
-         userTasks.tasks.map((task) => (
+          userTasks.tasks.map((task) => (
             <Task key={task.id}>
               <div className="delete-icon">
                 <FaTimes onClick={() => handleTaskDelete(task.id)} />
@@ -82,31 +88,35 @@ const TaskList = ({isCompleted}) => {
                 <h4>{task.description}</h4>
               </div>
               <div className="ctn-info">
-                {!isCompleted ? ( 
-                  <span style={{ background: '#63B3ED' }}>{task.status}</span>
-                ) :
-                (
-                  <span style={{ background: '#68D391' }}>{task.status}</span>
+                {!isCompleted ? (
+                  <span style={{ background: "#63B3ED" }}>{task.status}</span>
+                ) : (
+                  <span style={{ background: "#68D391" }}>{task.status}</span>
                 )}
                 <VerifyDifficulty difficulty={task.dificulty} />
-
               </div>
               <div className="end">
-              <span>Criado: {format(new Date(task.createdAt), 'dd/MM/yyyy')}</span>
-              {!isCompleted ? ( 
-                  <div className="ctn-end" onClick={() => handleUpdateStatus(task.id)}>
+                <span>
+                  Criado: {format(new Date(task.createdAt), "dd/MM/yyyy")}
+                </span>
+                {!isCompleted ? (
+                  <div
+                    className="ctn-end"
+                    onClick={() => handleUpdateStatus(task.id)}
+                  >
                     <span>Terminar</span>
                     <MdOutlineTaskAlt />
                   </div>
-                ) :
-                (
+                ) : (
                   <div className="ctn-end">
-                    <span>Concluído: {format(new Date(task.updatedAt), 'dd/MM/yyyy')}</span>
+                    <span>
+                      Concluído:{" "}
+                      {format(new Date(task.updatedAt), "dd/MM/yyyy")}
+                    </span>
                     <MdOutlineTaskAlt />
                   </div>
                 )}
               </div>
-              
             </Task>
           ))
         ) : (
@@ -117,7 +127,7 @@ const TaskList = ({isCompleted}) => {
   );
 };
 TaskList.propTypes = {
-  isCompleted: PropTypes.bool
+  isCompleted: PropTypes.bool,
 };
 
 export default TaskList;

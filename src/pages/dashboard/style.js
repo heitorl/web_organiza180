@@ -15,8 +15,14 @@ export const ContentSideBar = styled.div`
 
 export const Content = styled.div`
   display: flex;
-  flex-grow: 1; /* Faz com que o Content ocupe todo o espaço livre */
+  flex-grow: 1;
   flex-direction: column;
+  align-items: center;
+
+  .ctn-column {
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+    margin-top: 50px;
+  }
 `;
-
-

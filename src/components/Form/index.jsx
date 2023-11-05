@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../Button";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { Formn } from "./style";
 import { createValidationSchemaUtil } from "../../utils/createValidationSchema.util";
 import Input from "../Input";

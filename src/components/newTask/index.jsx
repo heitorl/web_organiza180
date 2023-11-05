@@ -1,20 +1,15 @@
 import { Container, Content } from "./style";
-import Form from "../../components/Form";
-import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { TaskContext } from "../../providers/TaskContext.jsx";
-import Sidebar from "../../components/sideBar";
 import { MdOutlineDescription } from "react-icons/md";
+import Form from "../Form";
+import { TaskContext } from "../../providers/TaskContext";
 
 const NewTask = () => {
-  const navigate = useNavigate();
-
   const { createNewTask } = useContext(TaskContext);
 
   const handleCreateTask = async (data) => {
     try {
       await createNewTask(data);
-      navigate("/dashboard");
     } catch (error) {
       console.log(error);
     }
@@ -26,7 +21,7 @@ const NewTask = () => {
       label: "Título",
       placeholder: "Deixe um título legal",
       type: "text",
-      name: "titulo",
+      name: "title",
       required: true,
     },
     {
@@ -50,7 +45,6 @@ const NewTask = () => {
 
   return (
     <Container>
-      <Sidebar />
       <Content>
         <h1>Criar Nova Tarefa</h1>
         <Form
@@ -62,5 +56,10 @@ const NewTask = () => {
     </Container>
   );
 };
+
+// NewTask.propTypes = {
+//   isModalOpen: PropTypes.bool.isRequired,
+//   closeModal: PropTypes.func.isRequired,
+// };
 
 export default NewTask;

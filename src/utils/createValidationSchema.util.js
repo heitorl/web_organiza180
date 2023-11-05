@@ -4,14 +4,18 @@ export const createValidationSchemaUtil = (inputs) => {
   const validationSchema = {};
 
   inputs.forEach((input) => {
-    const { name, validation } = input;
+    const { name, validation, required } = input;
 
     validationSchema[name] = yup.lazy((value) => {
       if (validation && typeof validation === "function") {
         return validation(value);
       }
 
-      return yup.string().required("Campo obrigatório!");
+      if (required) {
+        return yup.string().required("Campo obrigatório!");
+      }
+
+      return yup.string();
     });
   });
 
