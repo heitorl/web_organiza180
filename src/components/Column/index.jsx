@@ -2,44 +2,18 @@ import { Draggable, Droppable } from "react-beautiful-dnd"; // Importe os compon
 import { IoAddCircleOutline } from "react-icons/io5";
 import { Container } from "./style";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+
 import NewTask from "../newTask";
 import Backdrop from "../Backdrop";
+import { useModal, useModalInfo } from "../../utils/useModalSchema.util";
+import { ModalTaskInfo } from "../ModalTaskInfo";
+import { useState } from "react";
 
-export const Column = ({ title, tasks, columnId }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export const Column = ({ title, tasks, columnId, handleDeleteTask }) => {
+  const { isModalOpen, openModal } = useModal();
+  const { isModalInfoOpen, openModalInfo } = useModalInfo();
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      // Verifique se o clique ocorreu fora do modal
-      if (isModalOpen && e.target.closest(".modal")) {
-        return;
-      }
-
-      closeModal();
-    };
-
-    // Adicione o event ao documento
-    document.addEventListener("click", handleOutsideClick);
-
-    // Removendo o event quando o componente for desmontado
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, [isModalOpen]);
-
-  const handleDeleteTask = (task) => {
-    return task;
-  };
-
+  const [taskCoordinates, setTaskCoordinates] = useState({ x: 0, y: 0 });
   return (
     <Container>
       <div className="ctn-title">
@@ -71,7 +45,15 @@ export const Column = ({ title, tasks, columnId }) => {
                       >
                         X
                       </button>
-                      <span className="info">
+                      <span
+                        className="info"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setTaskCoordinates({ x: rect.left, y: rect.top });
+                          openModalInfo();
+                        }}
+                      >
                         <u>MAIS INFO</u>
                       </span>
                     </div>
@@ -79,6 +61,9 @@ export const Column = ({ title, tasks, columnId }) => {
                 </Draggable>
               ))}
             {provided.placeholder}
+            {isModalInfoOpen && (
+              <ModalTaskInfo taskCoordinates={taskCoordinates} />
+            )}
           </div>
         )}
       </Droppable>
@@ -97,7 +82,7 @@ export const Column = ({ title, tasks, columnId }) => {
           <NewTask />
         </div>
       )}
-      <Backdrop isModalOpen={isModalOpen} />
+      <Backdrop isModalOpen={isModalOpen || isModalInfoOpen} />
     </Container>
   );
 };
@@ -106,4 +91,5 @@ Column.propTypes = {
   title: PropTypes.string.isRequired,
   tasks: PropTypes.array.isRequired,
   columnId: PropTypes.string.isRequired,
+  handleDeleteTask: PropTypes.func.isRequired,
 };

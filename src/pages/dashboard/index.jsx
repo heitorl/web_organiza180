@@ -5,10 +5,11 @@ import { UserContext } from "../../providers/UserContext";
 import { DragDropContext } from "react-beautiful-dnd";
 import { Column } from "../../components/Column";
 import { TaskContext } from "../../providers/TaskContext";
+import EmptyTask from "../../components/EmptyTask";
 
 const Dashboard = () => {
   const { user } = useContext(UserContext);
-  const { getAllTasksForUser } = useContext(TaskContext);
+  const { getAllTasksForUser, deleteTask } = useContext(TaskContext);
 
   const [userTasks, setUserTasks] = useState(user.tasks);
 
@@ -102,21 +103,40 @@ const Dashboard = () => {
     }));
   };
 
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await deleteTask(taskId);
+
+      const updatedTasks = await getAllTasksForUser(user.id);
+
+      setUserTasks(updatedTasks);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Container>
       <DragDropContext onDragEnd={onDragEnd}>
         <Content>
           {user && user.name && <Greeting name={user.name} />}
-          <div className="ctn-column">
-            {Object.values(columns).map((column) => (
-              <Column
-                key={column.id}
-                title={column.title}
-                tasks={column.tasks}
-                columnId={column.id}
-              />
-            ))}
-          </div>
+          {!userTasks.length ? (
+            <div className="modal">
+              <EmptyTask />
+            </div>
+          ) : (
+            <div className="ctn-column">
+              {Object.values(columns).map((column) => (
+                <Column
+                  key={column.id}
+                  title={column.title}
+                  tasks={column.tasks}
+                  columnId={column.id}
+                  handleDeleteTask={handleDeleteTask}
+                />
+              ))}
+            </div>
+          )}
         </Content>
       </DragDropContext>
     </Container>

@@ -1,16 +1,20 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const fadeInDown = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 export const Container = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
-`;
-
-export const ContentSideBar = styled.div`
-  display: flex;
-  background-color: red;
-  width: 300px;
-  height: 100vh;
 `;
 
 export const Content = styled.div`
@@ -19,10 +23,21 @@ export const Content = styled.div`
   flex-direction: column;
   align-items: center;
 
+  .modal {
+    display: flex;
+    text-align: center;
+    width: 550px;
+    margin: auto;
+    height: 400px;
+    -webkit-box-align: center;
+    align-items: center;
+  }
+
   .ctn-column {
     display: flex;
     width: 80%;
-    justify-content: space-between;
+    justify-content: space-around;
     margin-top: 50px;
+    animation: ${fadeInDown} 0.5s;
   }
 `;
