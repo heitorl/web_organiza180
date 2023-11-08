@@ -64,13 +64,13 @@ export const TaskProvider = ({ children }) => {
     }
   };
 
-  const updateTaskStatus = async (taskId) => {
+  const updateTaskStatus = async (taskId, status) => {
     try {
       const token = localStorage.getItem("@TOKEN");
 
       await api.patch(
         `/task/update/${taskId}`,
-        { status: "completed" },
+        { status: status },
         {
           headers: {
             Authorization: `Bearer ${token}`,

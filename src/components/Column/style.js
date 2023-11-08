@@ -54,9 +54,20 @@ export const Container = styled.div`
     padding: 0 1.5rem 0 1.5rem;
     display: flex;
     background: white;
-
+    overflow: auto;
     flex: 1;
     flex-direction: column;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--color-white);
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
 
     .ctn-task {
       margin-top: 5px;
@@ -70,9 +81,12 @@ export const Container = styled.div`
       color: #242741;
       font-weight: bold;
       .task-span {
-        display: flex;
         align-items: center;
         height: 100%;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .close-button {
         position: absolute;
@@ -90,7 +104,8 @@ export const Container = styled.div`
         bottom: 5px;
         right: 5px;
         cursor: pointer;
-        color: #242741;
+        /* color: #242741; */
+        color: dodgerblue;
         font-size: 10px;
       }
     }
@@ -101,7 +116,11 @@ export const Container = styled.div`
       .info {
         display: none;
       }
+
       .close-button {
+        display: none;
+      }
+      div {
         display: none;
       }
     }

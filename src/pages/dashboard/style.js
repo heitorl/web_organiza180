@@ -15,6 +15,11 @@ export const Container = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
+
+  .ctn-row {
+    display: flex;
+    align-items: flex-end;
+  }
 `;
 
 export const Content = styled.div`
@@ -39,5 +44,12 @@ export const Content = styled.div`
     justify-content: space-around;
     margin-top: 50px;
     animation: ${fadeInDown} 0.5s;
+  }
+
+  .border {
+    width: 55%;
+    border-bottom: 3px solid var(--primary);
+
+    padding-bottom: 40px;
   }
 `;

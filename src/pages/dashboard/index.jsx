@@ -6,10 +6,12 @@ import { DragDropContext } from "react-beautiful-dnd";
 import { Column } from "../../components/Column";
 import { TaskContext } from "../../providers/TaskContext";
 import EmptyTask from "../../components/EmptyTask";
+import { MenuAccount } from "../../components/Menu";
 
 const Dashboard = () => {
   const { user } = useContext(UserContext);
-  const { getAllTasksForUser, deleteTask } = useContext(TaskContext);
+  const { getAllTasksForUser, deleteTask, updateTaskStatus } =
+    useContext(TaskContext);
 
   const [userTasks, setUserTasks] = useState(user.tasks);
 
@@ -90,6 +92,7 @@ const Dashboard = () => {
       sourceColumn.tasks.splice(destination.index, 0, task); // Inserindo a tarefa na nova posição
     } else {
       // Movimentação entre colunas
+      updateTaskStatus(task.id, destinationColumn.title);
       sourceColumn.tasks = sourceColumn.tasks.filter(
         (t) => t.id !== draggableId
       );
@@ -119,7 +122,12 @@ const Dashboard = () => {
     <Container>
       <DragDropContext onDragEnd={onDragEnd}>
         <Content>
-          {user && user.name && <Greeting name={user.name} />}
+          <div className="ctn-row">
+            {user && user.name && <Greeting name={user.name} />}
+
+            <MenuAccount user={user} />
+          </div>
+          <div className="border"></div>
           {!userTasks.length ? (
             <div className="modal">
               <EmptyTask />

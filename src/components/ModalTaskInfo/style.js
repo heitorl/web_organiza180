@@ -43,6 +43,11 @@ export const Content = styled.div`
     span {
       color: #9b9b9b;
       font-weight: bold;
+      display: block;
+      width: 350px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       strong {
         color: darkblue;
       }

@@ -54,7 +54,7 @@ export const UserProvider = ({ children }) => {
 
   const userLogout = () => {
     setData(null);
-    localStorage.removeItem("@TOKEN");
+    localStorage.clear();
     navigate("/");
     window.location.reload();
   };

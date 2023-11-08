@@ -1,7 +1,8 @@
 import { FaTasks } from "react-icons/fa";
 import { Container, Content } from "./style";
 import PropTypes from "prop-types";
-export const ModalTaskInfo = ({ taskCoordinates }) => {
+import { format } from "date-fns";
+export const ModalTaskInfo = ({ taskCoordinates, selectedTaskInfo }) => {
   const modalWidth = 380;
   const modalHeight = 520;
   const viewportWidth = window.innerWidth;
@@ -28,25 +29,27 @@ export const ModalTaskInfo = ({ taskCoordinates }) => {
 
         <div className="ctn-info">
           <span className="title">
-            <strong>Título:</strong> Beber agua
+            <strong>Título:</strong>
+            {selectedTaskInfo.title}
           </span>
           <span className="description">
-            <strong>Descrição:</strong> jhondoe fala jhofala jhofala jhofala
-            jhofala jhofala jhofala jho
+            <strong>Descrição:</strong> {selectedTaskInfo.description}
           </span>
           <span className="dif">
-            <strong>dificuldade:</strong> Média
+            <strong>dificuldade:</strong> {selectedTaskInfo.dificulty}
           </span>
 
           <span className="status">
-            <strong>status:</strong> TO-DO
+            <strong>status:</strong> {selectedTaskInfo.status}
           </span>
 
           <span className="updated">
-            <strong>Ultima atualização:</strong> 22/02/2023
+            <strong>Ultima atualização:</strong>{" "}
+            {format(new Date(selectedTaskInfo.updatedAt), "dd/MM/yyyy")}
           </span>
           <span className="created">
-            <strong>Criado em:</strong> 20/02/2023
+            <strong>Criado em:</strong>{" "}
+            {format(new Date(selectedTaskInfo.createdAt), "dd/MM/yyyy")}
           </span>
         </div>
       </Content>
@@ -56,4 +59,5 @@ export const ModalTaskInfo = ({ taskCoordinates }) => {
 
 ModalTaskInfo.propTypes = {
   taskCoordinates: PropTypes.object,
+  selectedTaskInfo: PropTypes.object,
 };

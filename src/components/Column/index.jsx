@@ -1,4 +1,4 @@
-import { Draggable, Droppable } from "react-beautiful-dnd"; // Importe os componentes apropriados
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { Container } from "./style";
 import PropTypes from "prop-types";
@@ -8,12 +8,18 @@ import Backdrop from "../Backdrop";
 import { useModal, useModalInfo } from "../../utils/useModalSchema.util";
 import { ModalTaskInfo } from "../ModalTaskInfo";
 import { useState } from "react";
+import VerifyDifficulty from "../VerifyDificulty";
 
 export const Column = ({ title, tasks, columnId, handleDeleteTask }) => {
   const { isModalOpen, openModal } = useModal();
   const { isModalInfoOpen, openModalInfo } = useModalInfo();
-
   const [taskCoordinates, setTaskCoordinates] = useState({ x: 0, y: 0 });
+  const [selectedTaskInfo, setSelectedTaskInfo] = useState(null);
+
+  const openMoreInfoTask = (task) => {
+    setSelectedTaskInfo(task);
+  };
+
   return (
     <Container>
       <div className="ctn-title">
@@ -52,17 +58,25 @@ export const Column = ({ title, tasks, columnId, handleDeleteTask }) => {
                           const rect = e.currentTarget.getBoundingClientRect();
                           setTaskCoordinates({ x: rect.left, y: rect.top });
                           openModalInfo();
+                          openMoreInfoTask(task);
                         }}
                       >
                         <u>MAIS INFO</u>
                       </span>
+                      <VerifyDifficulty
+                        className="dif"
+                        difficulty={task.dificulty}
+                      />
                     </div>
                   )}
                 </Draggable>
               ))}
             {provided.placeholder}
             {isModalInfoOpen && (
-              <ModalTaskInfo taskCoordinates={taskCoordinates} />
+              <ModalTaskInfo
+                taskCoordinates={taskCoordinates}
+                selectedTaskInfo={selectedTaskInfo}
+              />
             )}
           </div>
         )}
